@@ -8,30 +8,31 @@ const App = () => {
   const chatEndRef = useRef(null);
 
 const generateBotResponse = async (history) => {
-  // Prepare payload for Gemini API
-  const contents = history.map(({ role, text }) => ({ role, parts: [{ text }] }));
-
-  const requestOptions = {
-    method: "POST",
-    headers: { 
-      "Content-Type": "application/json",
-      "x-goog-api-key": import.meta.env.VITE_GEMINI_API_KEY
-    },
-    body: JSON.stringify({ contents })
-  };
+  const contents = history.map(({ role, text }) => ({
+    role,
+    parts: [{ text }]
+  }));
 
   try {
-    const response = await fetch(import.meta.env.VITE_GEMINI_API_URL, requestOptions);
-    if (!response.ok) {
-      const text = await response.text(); // fallback
-      throw new Error(text || "Something went wrong!");
-    }
+    const response = await fetch(import.meta.env.VITE_GEMINI_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": import.meta.env.VITE_GEMINI_API_KEY
+      },
+      body: JSON.stringify({ contents })
+    });
+
     const data = await response.json();
-    console.log(data); // Handle the generated content here
+
+    if (!response.ok) throw new Error(JSON.stringify(data, null, 2));
+
+    console.log("Gemini response:", data);
   } catch (error) {
-    console.log("Error generating bot response:", error);
+    console.error("Error generating bot response:", error);
   }
 };
+
 
   // Auto-scroll when chatHistory updates
   useEffect(() => {
