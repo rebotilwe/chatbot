@@ -7,10 +7,10 @@ const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const chatEndRef = useRef(null);
 
-const generateBotResponse = async (history) => {
+const generateBotResponse = async (history, setChatHistory) => {
   const contents = history.map(({ role, text }) => ({
     role,
-    parts: [{ text }]
+    parts: [{ text }],
   }));
 
   try {
@@ -18,9 +18,9 @@ const generateBotResponse = async (history) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-goog-api-key": import.meta.env.VITE_GEMINI_API_KEY
+        "x-goog-api-key": import.meta.env.VITE_GEMINI_API_KEY,
       },
-      body: JSON.stringify({ contents })
+      body: JSON.stringify({ contents }),
     });
 
     const data = await response.json();
@@ -28,10 +28,23 @@ const generateBotResponse = async (history) => {
     if (!response.ok) throw new Error(JSON.stringify(data, null, 2));
 
     console.log("Gemini response:", data);
+
+    // Get the bot's actual reply
+    const botReply =
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "I'm sorry, I couldn't generate a response.";
+
+    // Replace the "Thinking..." message with the actual reply
+    setChatHistory((prev) => [
+      ...prev.slice(0, -1),
+      { role: "model", text: botReply },
+    ]);
   } catch (error) {
     console.error("Error generating bot response:", error);
   }
 };
+
+
 
 
   // Auto-scroll when chatHistory updates

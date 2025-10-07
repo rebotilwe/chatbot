@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
-function ChatForm({chatHistory, setChatHistory, generateBotResponse }) {
+function ChatForm({ chatHistory, setChatHistory, generateBotResponse }) {
   const inputRef = useRef();
 
   const handleFormSubmit = (e) => {
@@ -8,15 +8,26 @@ function ChatForm({chatHistory, setChatHistory, generateBotResponse }) {
     const userMessage = inputRef.current.value.trim();
     if (!userMessage) return;
 
-    setChatHistory(prevHistory => [
+    // Add user's message immediately
+    setChatHistory((prevHistory) => [
       ...prevHistory,
-      { role: "user", text: userMessage }
+      { role: "user", text: userMessage },
     ]);
 
-    inputRef.current.value = '';
-    setTimeout(() => setChatHistory((history) =>[...history,{role:"model",text: "Thinking..."}]),600);
+    // Clear input
+    inputRef.current.value = "";
 
-    generateBotResponse([...chatHistory, {role: "user", text: userMessage}]);
+    // Optional: show "Thinking..." before the bot responds
+    setChatHistory((prevHistory) => [
+      ...prevHistory,
+      { role: "model", text: "Thinking..." },
+    ]);
+
+    // Generate the actual bot response
+    generateBotResponse(
+      [...chatHistory, { role: "user", text: userMessage }],
+      setChatHistory
+    );
   };
 
   return (
@@ -28,13 +39,13 @@ function ChatForm({chatHistory, setChatHistory, generateBotResponse }) {
         ref={inputRef}
         aria-label="Message input"
       />
-      {/* <button
-        className="material-symbols-rounded"
+      <button
+        className="send-btn material-symbols-rounded"
         type="submit"
         aria-label="Send message"
       >
         keyboard_arrow_upward
-      </button> */}
+      </button>
     </form>
   );
 }
