@@ -7,25 +7,31 @@ const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const chatEndRef = useRef(null);
 
-  const generateBotResponse = async(history)=>{
+const generateBotResponse = async (history) => {
+  // Prepare payload for Gemini API
+  const contents = history.map(({ role, text }) => ({ role, parts: [{ text }] }));
 
-    history = history.map(({role,text}) => ({role, parts: [{text}]}))
-const requestOptions = {
-  method:"POST",
-  Headers: { "Content-Type":"application/json"},
-  body: JSON.stringify({contents:history})
-}
-try{
-const response = await fetch(import.meta.env.REACT_APP_GEMINI_API_KEY, requestOptions);
-const data = await response.json();
-if(!response.ok) throw new Error(data.error.message || "Something went wrong!");
-console.log(data)
-}catch (error){
-  console.log(error);
-
-};
-
+  const requestOptions = {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json",
+      "x-goog-api-key": import.meta.env.REACT_APP_GEMINI_API_KEY
+    },
+    body: JSON.stringify({ contents })
   };
+
+  try {
+    const response = await fetch(import.meta.env.REACT_APP_GEMINI_API_URL, requestOptions);
+    if (!response.ok) {
+      const text = await response.text(); // fallback
+      throw new Error(text || "Something went wrong!");
+    }
+    const data = await response.json();
+    console.log(data); // Handle the generated content here
+  } catch (error) {
+    console.log("Error generating bot response:", error);
+  }
+};
 
   // Auto-scroll when chatHistory updates
   useEffect(() => {
