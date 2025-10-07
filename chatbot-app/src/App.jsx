@@ -30,9 +30,14 @@ const App = () => {
           </div>
 
           {/* Render chat history */}
-          {chatHistory.map((chat, index) => (
-            <ChatMessage key={index} chat={chat} />   
-          ))}
+       {chatHistory.map((message, index) => (
+  <div
+    key={index}
+    className={`chat-message ${message.role === "user" ? "user" : "bot"}`}
+  >
+    <div className="message-bubble">{message.text}</div>
+  </div>
+))}
 
           {/* Chat Footer */}
           <div className="chat-footer">

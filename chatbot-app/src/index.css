@@ -129,40 +129,41 @@ body {
   background-color: var(--primary-hover);
 }
 
-.chat-body .message {
+.message {
   display: flex;
+  align-items: flex-start;
   gap: 11px;
-  align-items: center;
 }
 
-.chat-body .message .message-text {
+.message-text {
   padding: 12px 16px;
   max-width: 75%;
   word-wrap: break-word;
   white-space: pre-line;
   font-size: 0.95rem;
+  border-radius: 13px;
 }
 
-.chat-body .bot-message .message-text {
-  background: #f6f2ff;
+/* Bot messages (left) */
+.bot-message {
+  justify-content: flex-start;
+}
+
+.bot-message .message-text {
+  background: var(--bubble-bot);
+  color: #2d2d2d;
   border-radius: 13px 13px 13px 3px;
 }
 
-.chat-body .user-message {
-  flex-direction: column;
-  align-items: flex-end;
+/* User messages (right) */
+.user-message {
+  justify-content: flex-end;
 }
 
-.chat-body .bot-message svg {
-  height: 35px;
-  width: 35px;
-  padding: 6px;
-  flex-shrink: 0;
-  fill: #fff;
-  background: #6d4fc2;
-  align-self: flex-end;
-  border-radius: 50%;
-  margin-bottom: 2px;
+.user-message .message-text {
+  background: var(--bubble-user);
+  color: #fff;
+  border-radius: 13px 13px 3px 13px;
 }
 
 /* Footer */
@@ -174,7 +175,7 @@ body {
   background: rgba(255, 255, 255, 0.95);
 }
 
-.chat-footer .chat-form {
+.chat-form {
   display: flex;
   align-items: center;
   border-radius: 32px;
@@ -183,12 +184,12 @@ body {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
 }
 
-.chat-footer .chat-form:focus-within {
+.chat-form:focus-within {
   outline: 2px solid #6d4fc2;
 }
 
 /* Input */
-.chat-form .message-input {
+.message-input {
   border: none;
   outline: none;
   background: none;
@@ -206,13 +207,21 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Hide browser mic/search icons */
-.message-input::-webkit-input-speech-button,
-.message-input::-webkit-search-decoration,
-.message-input::-webkit-search-cancel-button,
-.message-input::-webkit-search-results-button,
-.message-input::-webkit-search-results-decoration {
-  display: none;
+/* Hide all built-in browser icons */
+input::-webkit-input-speech-button,
+input::-webkit-voice-button,
+input::-ms-clear,
+input::-webkit-search-cancel-button,
+input::-webkit-calendar-picker-indicator,
+input::-webkit-inner-spin-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+.message-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: none !important;
 }
 
 /* Send button */
