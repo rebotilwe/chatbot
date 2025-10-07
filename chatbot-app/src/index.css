@@ -7,6 +7,7 @@
   --bubble-bot: #f3efff;
   --bubble-user: var(--primary);
   --shadow: rgba(124, 93, 250, 0.3);
+  --font-family: 'Inter', sans-serif;
 }
 
 *,
@@ -15,7 +16,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-family);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -25,6 +27,9 @@ body {
   justify-content: center;
   background: var(--bg-gradient);
   padding: 1rem;
+  color: #3b3b3b;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Chat window */
@@ -34,15 +39,16 @@ body {
   display: flex;
   flex-direction: column;
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 24px 48px var(--shadow);
   overflow: hidden;
-  backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(180%) blur(18px);
   transition: box-shadow 0.3s ease;
 }
 
 .chatbot-popup:hover {
   box-shadow: 0 32px 64px var(--shadow);
+  cursor: default;
 }
 
 /* Header */
@@ -79,11 +85,12 @@ body {
 }
 
 .logo-text {
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  user-select: none;
 }
 
 .chat-header button {
@@ -95,6 +102,9 @@ body {
   cursor: pointer;
   transition: background-color 0.25s ease;
   padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chat-header button:hover,
@@ -114,6 +124,8 @@ body {
   scrollbar-width: thin;
   scrollbar-color: var(--primary) transparent;
   background: #fff;
+  scroll-padding-bottom: 80px; /* to avoid footer overlap */
+  border-radius: 0 0 24px 24px;
 }
 
 .chat-body::-webkit-scrollbar {
@@ -130,6 +142,7 @@ body {
   background-color: var(--primary-hover);
 }
 
+/* Messages */
 .message {
   display: flex;
   align-items: flex-end;
@@ -138,6 +151,7 @@ body {
   word-wrap: break-word;
   font-size: 1rem;
   line-height: 1.5;
+  transition: background-color 0.3s ease;
 }
 
 .message.bot-message svg {
@@ -148,60 +162,42 @@ body {
   border-radius: 50%;
   fill: #fff;
   box-shadow: 0 4px 12px rgba(124, 93, 250, 0.4);
+  flex-shrink: 0;
 }
 
 .message-text {
   padding: 14px 20px;
   border-radius: 20px;
   font-weight: 500;
+  white-space: pre-line;
+  box-shadow: 0 4px 14px rgba(124, 93, 250, 0.12);
+  transition: box-shadow 0.3s ease;
 }
 
 .bot-message .message-text {
   background: var(--bubble-bot);
   color: #3b3b3b;
   border-radius: 20px 20px 20px 4px;
-  box-shadow: 0 4px 14px rgba(124, 93, 250, 0.12);
 }
 
-/* User message aligned right */
 .user-message {
-  display: flex;             /* already set, just ensure */
   flex-direction: row-reverse;
-  justify-content: flex-end; /* aligns bubble to right */
-  gap: 16px;                 /* spacing between avatar & bubble */
-  max-width: 100%;           /* allow bubble to go all the way right */
-  word-wrap: break-word;
-}
-
-.user-message .message-text {
-  background: var(--bubble-user);
-  color: #fff;
-  border-radius: 20px 20px 4px 20px;
-  box-shadow: 0 4px 14px rgba(124, 93, 250, 0.28);
-  max-width: 75%;            /* limit bubble width */
-  text-align: left;          /* optional: text inside bubble */
-}
-
-/* Bot message stays left */
-.bot-message {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  justify-content: flex-end;
   max-width: 100%;
 }
 
-
-.user-message svg {
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.07));
-}
-
 .user-message .message-text {
   background: var(--bubble-user);
   color: #fff;
   border-radius: 20px 20px 4px 20px;
   box-shadow: 0 4px 14px rgba(124, 93, 250, 0.28);
-  max-width: 75%;            /* limit bubble width */
-  text-align: left;          /* optional: text inside bubble */
+  max-width: 75%;
+  text-align: left;
+}
+
+.user-message svg {
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.07));
+  flex-shrink: 0;
 }
 
 /* Footer */
@@ -210,6 +206,10 @@ body {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: saturate(180%) blur(12px);
   border-top: 1px solid #e0e0ff;
+  border-radius: 0 0 24px 24px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 .chat-form {
@@ -238,6 +238,7 @@ body {
   font-weight: 400;
   color: #3a3a3a;
   transition: color 0.25s ease;
+  font-synthesis: none;
 }
 
 .message-input::placeholder {
@@ -259,6 +260,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
+  user-select: none;
 }
 
 .chat-form button:hover,
