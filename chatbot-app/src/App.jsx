@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Chatbot from "./components/Chatbot";
 import ChatForm from "./components/ChatForm";
-import ChatMessage from "./components/ChatMessage"; // ✅ add this
+import ChatMessage from "./components/ChatMessage";
 
 const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
+  const chatEndRef = useRef(null);
+
+  // Auto-scroll when chatHistory updates
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory]);
 
   return (
     <div className="container">
@@ -15,7 +21,10 @@ const App = () => {
             <Chatbot />
             <h2 className="logo-text">Chatbot</h2>
           </div>
-          <button className="material-symbols-rounded" aria-label="Minimize chat">
+          <button
+            className="material-symbols-rounded"
+            aria-label="Minimize chat"
+          >
             keyboard_arrow_down
           </button>
         </div>
@@ -23,21 +32,18 @@ const App = () => {
         {/* Chat Body */}
         <div className="chat-body">
           <div className="message bot-message">
-            {/* <Chatbot /> */}
             <p className="message-text">
               Hey there! <br /> I'm your friendly chatbot. How can I assist you today?
             </p>
           </div>
 
           {/* Render chat history */}
-       {chatHistory.map((message, index) => (
-  <div
-    key={index}
-    className={`chat-message ${message.role === "user" ? "user" : "bot"}`}
-  >
-    <div className="message-bubble">{message.text}</div>
-  </div>
-))}
+          {chatHistory.map((chat, index) => (
+            <ChatMessage key={index} chat={chat} />
+          ))}
+
+          {/* Scroll anchor */}
+          <div ref={chatEndRef} />
 
           {/* Chat Footer */}
           <div className="chat-footer">
