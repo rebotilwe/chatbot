@@ -23,7 +23,7 @@ const App = () => {
         {/* Chat Body */}
         <div className="chat-body">
           <div className="message bot-message">
-            <Chatbot />
+            {/* <Chatbot /> */}
             <p className="message-text">
               Hey there! <br /> I'm your friendly chatbot. How can I assist you today?
             </p>

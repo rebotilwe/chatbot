@@ -8,13 +8,11 @@ function ChatForm({ setChatHistory }) {
     const userMessage = inputRef.current.value.trim();
     if (!userMessage) return;
 
-    // ✅ Update chat history correctly
     setChatHistory(prevHistory => [
       ...prevHistory,
       { role: "user", text: userMessage }
     ]);
 
-    // Clear input
     inputRef.current.value = '';
   };
 
@@ -25,10 +23,9 @@ function ChatForm({ setChatHistory }) {
         placeholder="Type a message..."
         className="message-input"
         ref={inputRef}
-        aria-label="Message input"
       />
       <button
-        className="material-symbols-rounded"
+        className="send-btn material-symbols-rounded"
         type="submit"
         aria-label="Send message"
       >
