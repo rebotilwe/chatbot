@@ -15,13 +15,13 @@ const generateBotResponse = async (history) => {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
-      "x-goog-api-key": import.meta.env.REACT_APP_GEMINI_API_KEY
+      "x-goog-api-key": import.meta.env.VITE_GEMINI_API_KEY
     },
     body: JSON.stringify({ contents })
   };
 
   try {
-    const response = await fetch(import.meta.env.REACT_APP_GEMINI_API_URL, requestOptions);
+    const response = await fetch(import.meta.env.VITE_GEMINI_API_URL, requestOptions);
     if (!response.ok) {
       const text = await response.text(); // fallback
       throw new Error(text || "Something went wrong!");
