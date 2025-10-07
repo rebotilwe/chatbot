@@ -23,9 +23,10 @@ function ChatForm({ setChatHistory }) {
         placeholder="Type a message..."
         className="message-input"
         ref={inputRef}
+        aria-label="Message input"
       />
       <button
-        className="send-btn material-symbols-rounded"
+        className="material-symbols-rounded"
         type="submit"
         aria-label="Send message"
       >
