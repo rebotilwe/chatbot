@@ -19,5 +19,9 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // turn off React prop-types checking
+      'react/prop-types': 'off',
+    },
   },
 ])
