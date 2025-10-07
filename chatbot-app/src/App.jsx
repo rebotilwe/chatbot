@@ -7,6 +7,10 @@ const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const chatEndRef = useRef(null);
 
+  const generateBotResponse = (history)=>{
+console.log(history)
+  }
+
   // Auto-scroll when chatHistory updates
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -47,7 +51,7 @@ const App = () => {
 
           {/* Chat Footer */}
           <div className="chat-footer">
-            <ChatForm setChatHistory={setChatHistory} />
+            <ChatForm chatHistory={chatHistory} setChatHistory={setChatHistory} generateBotResponse={generateBotResponse} />
           </div>
         </div>
       </div>
