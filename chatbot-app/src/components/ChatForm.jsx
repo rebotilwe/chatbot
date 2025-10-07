@@ -14,6 +14,7 @@ function ChatForm({ setChatHistory }) {
     ]);
 
     inputRef.current.value = '';
+    setTimeout(() => setChatHistory((history) =>[...history,{role:"model",text: "Thinking..."}]),600);
   };
 
   return (
@@ -24,14 +25,14 @@ function ChatForm({ setChatHistory }) {
         className="message-input"
         ref={inputRef}
         aria-label="Message input"
-      />chat
-      <button
+      />
+      {/* <button
         className="material-symbols-rounded"
         type="submit"
         aria-label="Send message"
       >
         keyboard_arrow_upward
-      </button>
+      </button> */}
     </form>
   );
 }
