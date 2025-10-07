@@ -7,9 +7,25 @@ const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const chatEndRef = useRef(null);
 
-  const generateBotResponse = (history)=>{
-console.log(history)
-  }
+  const generateBotResponse = async(history)=>{
+
+    history = history.map(({role,text}) => ({role, parts: [{text}]}))
+const requestOptions = {
+  method:"POST",
+  Headers: { "Content-Type":"application/json"},
+  body: JSON.stringify({contents:history})
+}
+try{
+const response = await fetch(import.meta.env.REACT_APP_GEMINI_API_KEY, requestOptions);
+const data = await response.json();
+if(!response.ok) throw new Error(data.error.message || "Something went wrong!");
+console.log(data)
+}catch (error){
+  console.log(error);
+
+};
+
+  };
 
   // Auto-scroll when chatHistory updates
   useEffect(() => {
