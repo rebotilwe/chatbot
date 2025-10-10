@@ -5,7 +5,9 @@ import ChatMessage from "./components/ChatMessage";
 
 const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
+    const [showChatbot, setShowChatbot] = useState(false);
   const chatEndRef = useRef(null);
+  const chatBodyRef = useRef();
 
 const generateBotResponse = async (history, setChatHistory) => {
   const contents = history.map(({ role, text }) => ({
@@ -48,12 +50,25 @@ const generateBotResponse = async (history, setChatHistory) => {
 
 
   // Auto-scroll when chatHistory updates
+  // useEffect(() => {
+  //   chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [chatHistory]);
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatHistory]);
+    chatBodyRef.current.scrollTo({top: chatBodyRef.current.scrollHeight, behavior: "smooth"});
+  },[chatHistory]);
 
   return (
-    <div className="container">
+ <div className={`container ${showChatbot ? "show-chatbot" : ""}`}>
+  <button
+    onClick={() => setShowChatbot(prev => !prev)}
+    id="chatbot-toggler"
+  >
+    {showChatbot ? (
+      <span className="material-symbols-rounded">close</span>
+    ) : (
+      <span className="material-symbols-rounded">mode_comment</span>
+    )}
+  </button>
       <div className="chatbot-popup">
         {/* Chat Header */}
         <div className="chat-header">
@@ -61,7 +76,7 @@ const generateBotResponse = async (history, setChatHistory) => {
             <Chatbot />
             <h2 className="logo-text">Chatbot</h2>
           </div>
-          <button
+          <button onClick={() => setShowChatbot((prev) => !prev)}
             className="material-symbols-rounded"
             aria-label="Minimize chat"
           >
@@ -70,7 +85,7 @@ const generateBotResponse = async (history, setChatHistory) => {
         </div>
 
         {/* Chat Body */}
-        <div className="chat-body">
+        <div  ref={chatBodyRef} className="chat-body">
           <div className="message bot-message">
             <p className="message-text">
               Hey there! <br /> I'm your friendly chatbot. How can I assist you today?

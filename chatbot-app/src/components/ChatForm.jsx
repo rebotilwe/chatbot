@@ -39,13 +39,13 @@ function ChatForm({ chatHistory, setChatHistory, generateBotResponse }) {
         ref={inputRef}
         aria-label="Message input"
       />
-      <button
+      {/* <button
         className="send-btn material-symbols-rounded"
         type="submit"
         aria-label="Send message"
       >
         keyboard_arrow_upward
-      </button>
+      </button> */}
     </form>
   );
 }
